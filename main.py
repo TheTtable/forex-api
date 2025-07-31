@@ -16,7 +16,7 @@ def get_news():
     lines = response.text.splitlines()
     reader = csv.DictReader(lines)
 
-    today = datetime.utcnow().date()
+    today = datetime(2025, 7, 30).date()  # ← of een andere datum waarvan je wéét dat er nieuws is
     results = []
 
     for row in reader:  # ✅ correct ingesprongen
