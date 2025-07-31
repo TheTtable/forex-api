@@ -21,9 +21,10 @@ def get_news():
 
     for row in reader:
         try:
-            event_date = datetime.strptime(row["Date"], "%b %d, %Y").date()
-            if event_date != today:
-                continue
+            event_date = datetime.strptime(row["Date"].strip(), "%b %d, %Y").date()
+            print(row["Date"], row["Currency"], row["Impact"], row["Event"])
+            #if event_date != today:
+                #continue
 
             impact = row["Impact"].strip()
             currency = row["Currency"].strip()
