@@ -11,7 +11,7 @@ def home():
 
 @app.route("/news")
 def get_news():
-    url = "https://nfs.faireconomy.media/ff_calendar_thisweek.csv"
+    url = "https://cdn-nfs.faireconomy.media/ff_calendar_thisweek.csv"
     response = requests.get(url)
     lines = response.text.splitlines()
     reader = csv.DictReader(lines)
@@ -20,6 +20,7 @@ def get_news():
     results = []
 
     for row in reader:
+        print(row)
         try:
             event_date = datetime.strptime(row["Date"].strip(), "%b %d, %Y").date()
             print(row["Date"], row["Currency"], row["Impact"], row["Event"])
