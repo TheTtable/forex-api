@@ -32,6 +32,8 @@ def get_news():
             title = row["Event"].strip()
             time = row["Time"].strip()
 
+            print(f"{event_date} | {impact} | {currency} | {row['Event']}")
+
             if impact == "High" and currency in ["USD", "EUR"]:
                 results.append({"currency": currency, "title": title, "time": time})
         except:
