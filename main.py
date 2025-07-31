@@ -11,7 +11,7 @@ def home():
 
 @app.route("/news")
 def get_news():
-    url = "https://cdn-nfs.faireconomy.media/ff_calendar_thisweek.csv"
+  url = "https://nfs.faireconomy.media/ff_calendar_thisweek.csv"
     response = requests.get(url)
     lines = response.text.splitlines()
     reader = csv.DictReader(lines)
