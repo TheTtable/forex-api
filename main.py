@@ -1,0 +1,38 @@
+from flask import Flask, jsonify
+import csv
+import requests
+from datetime import datetime
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Forex API werkt ✅"
+
+@app.route("/news")
+def get_news():
+    url = "https://nfs.faireconomy.media/ff_calendar_thisweek.csv"
+    response = requests.get(url)
+    lines = response.text.splitlines()
+    reader = csv.DictReader(lines)
+
+    today = datetime.utcnow().date()
+    results = []
+
+    for row in reader:
+        try:
+            event_date = datetime.strptime(row["Date"], "%b %d, %Y").date()
+            if event_date != today:
+                continue
+
+            impact = row["Impact"].strip()
+            currency = row["Currency"].strip()
+            title = row["Event"].strip()
+            time = row["Time"].strip()
+
+            if impact == "High" and currency in ["USD", "EUR"]:
+                results.append({"currency": currency, "title": title, "time": time})
+        except:
+            continue
+
+    return jsonify(results)
