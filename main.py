@@ -19,11 +19,11 @@ def get_news():
     today = datetime.utcnow().date()
     results = []
 
-    for row in reader:
-        print(row)
+    for row in reader:  # ✅ correct ingesprongen
         try:
             event_date = datetime.strptime(row["Date"].strip(), "%b %d, %Y").date()
             print(row["Date"], row["Currency"], row["Impact"], row["Event"])
+
             if event_date != today:
                 continue
 
@@ -34,19 +34,17 @@ def get_news():
 
             print(f"{event_date} | {impact} | {currency} | {title}")
 
-        if event_date != today:
+            if impact == "High" and currency in ["USD", "EUR"]:
+                results.append({
+                    "currency": currency,
+                    "title": title,
+                    "time": time
+                })
+        except Exception as e:
+            print(f"Error parsing row: {e}")
             continue
 
-        if impact == "High" and currency in ["USD", "EUR"]:
-            results.append({
-                "currency": currency,
-                "title": title,
-                "time": time
-            })
-    except Exception as e:
-        print(f"Error parsing row: {e}")
-        continue
-
     return jsonify(results)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
